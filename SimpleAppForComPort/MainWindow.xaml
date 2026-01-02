@@ -3,10 +3,111 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SimpleAppForComPort"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="COM Control" Height="500" Width="900">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/> <!-- Menu -->
+            <RowDefinition Height="*"/>    <!-- Content -->
+            <RowDefinition Height="Auto"/> <!-- Status Bar -->
+        </Grid.RowDefinitions>
 
+        <!-- Menu -->
+        <Menu Grid.Row="0">
+            <MenuItem Header="Файл">
+                <MenuItem Header="Выход" Click="OnExitClick"/>
+            </MenuItem>
+            <MenuItem Header="Настройки">
+                <MenuItem Header="Открыть настройки" Click="OnOpenSettingsClick"/>
+            </MenuItem>
+            <MenuItem Header="Помощь">
+                <MenuItem Header="О программе" Click="OnAboutClick"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- Content -->
+        <Grid Grid.Row="1" Margin="8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="8"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Controls Panel -->
+            <Border Grid.Column="0" Padding="8" BorderThickness="1" BorderBrush="#DDD" CornerRadius="6">
+                <StackPanel>
+                    <TextBlock Text="COM-порт" FontWeight="Bold"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,4,0,8">
+                        <ComboBox x:Name="ComboPorts" Width="160"/>
+                        <Button x:Name="BtnRefreshPorts" Content="Обновить" Margin="8,0,0,0" Click="OnRefreshPortsClick"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <Button x:Name="BtnConnect" Content="Подключиться" Width="120" Click="OnConnectClick"/>
+                        <Button x:Name="BtnDisconnect" Content="Отключиться" Width="120" Margin="8,0,0,0" Click="OnDisconnectClick"/>
+                    </StackPanel>
+
+                    <Separator/>
+
+                    <TextBlock Text="Управление" FontWeight="Bold" Margin="0,8,0,4"/>
+                    <Button x:Name="BtnStartRound" Content="Начать раунд" Height="36" Click="OnStartRoundClick"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Button x:Name="BtnModeA" Content="Режим A" Width="120" Height="32" Click="OnModeAClick"/>
+                        <Button x:Name="BtnModeB" Content="Режим B" Width="120" Height="32" Margin="8,0,0,0" Click="OnModeBClick"/>
+                    </StackPanel>
+
+                    <Separator/>
+
+                    <TextBlock Text="Индикация" FontWeight="Bold" Margin="0,8,0,4"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <TextBlock Text="Таймер:" Width="80"/>
+                        <Label x:Name="LabelTimer" Content="00:00" FontSize="16"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <TextBlock Text="Первый цвет:" Width="80"/>
+                        <Label x:Name="LabelFirstColor" Content="—" FontSize="16"/>
+                    </StackPanel>
+                    
+                    <Button Content="Симулировать '01'" Margin="0,8,0,0" Click="OnSimulateClick"/>
+
+                    <Separator/>
+
+                    <TextBlock Text="Текущий режим" FontWeight="Bold" Margin="0,8,0,4"/>
+                    <Label x:Name="LabelMode" Content="—"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Divider -->
+            <Grid Grid.Column="1">
+                <Rectangle Fill="#EEE"/>
+            </Grid>
+
+            <!-- Log Panel -->
+            <Border Grid.Column="2" Padding="8" BorderThickness="1" BorderBrush="#DDD" CornerRadius="6">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Логи" FontWeight="Bold"/>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <TextBox x:Name="TextLog" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True"/>
+                    </ScrollViewer>
+                    <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Очистить" Click="OnClearLogClick"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Status Bar -->
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Статус порта:"/>
+                    <TextBlock x:Name="TextStatus" Text="Отключен" Margin="6,0,0,0"/>
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>
